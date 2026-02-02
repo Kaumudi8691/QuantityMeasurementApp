@@ -19,5 +19,6 @@ Feet other = (Feet) obj;
     @Override
     public int hashCode() {
         return Double.hashCode(value);
+        
     }
 }

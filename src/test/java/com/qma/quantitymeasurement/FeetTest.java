@@ -21,6 +21,7 @@ Feet f2 = new Feet(1.0);
         Feet f1 = new Feet(1.0);
         Feet f2 = new Feet(2.0);
         assertNotEquals(f1, f2);
+        
     }
 
 }
