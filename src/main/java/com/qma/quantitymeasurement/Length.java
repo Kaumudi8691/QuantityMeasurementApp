@@ -81,6 +81,31 @@ public double convert(LengthUnit targetUnit) {
 }
 
 
+/**
+ * UC6: Add another Length to this Length.
+ * Result is returned in the unit of the first operand (this.unit).
+ *
+ * Examples:
+ *  new Length(1.0, FEET).add(new Length(2.0, FEET)) -> Length(3.0, FEET)
+ *  new Length(1.0, FEET).add(new Length(12.0, INCH)) -> Length(2.0, FEET)
+ *  new Length(12.0, INCH).add(new Length(1.0, FEET)) -> Length(24.0, INCH)
+ */
+public Length add(Length other) {
+    if (other == null) {
+        throw new IllegalArgumentException("Other length cannot be null");
+    }
+
+    // Convert both values to base unit (FEET), then add
+    double sumInFeet = this.valueInFeet() + other.valueInFeet();
+
+    // Convert the sum from FEET back to the unit of the first operand
+    double sumInThisUnit = convert(sumInFeet, LengthUnit.FEET, this.unit);
+
+    // Return new immutable Length object
+    return new Length(sumInThisUnit, this.unit);
+}
+
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
