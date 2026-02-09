@@ -106,15 +106,50 @@ public Length add(Length other) {
 }
 
 
+
+    /* * UC7: Add another Length to this Length with explicit target unit.
+     * Result is returned in the specified targetUnit (not dependent on operand units).
+     *
+     * Examples:
+     *  new Length(1.0, FEET).add(new Length(12.0, INCH), FEET) -> Length(2.0, FEET)
+     *  new Length(1.0, FEET).add(new Length(12.0, INCH), INCH) -> Length(24.0, INCH)
+     *  new Length(1.0, FEET).add(new Length(12.0, INCH), YARD) -> Length(0.6667, YARD)
+     */
+    public Length add(Length other, LengthUnit targetUnit) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other length cannot be null");
+        }
+
+if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+
+        // Convert both values to base unit (FEET), then add
+        double sumInFeet = this.valueInFeet() + other.valueInFeet();
+
+        // Convert sum from FEET to the explicitly specified target unit
+        double sumInTargetUnit = convert(sumInFeet, LengthUnit.FEET, targetUnit);
+
+        // Return new immutable Length object in target unit
+        return new Length(sumInTargetUnit, targetUnit);
+    }
+
+private static final double EPSILON = 1e-6;
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Length other)) return false;
-        return Double.compare(this.valueInFeet(), other.valueInFeet()) == 0;
+        //return Double.compare(this.valueInFeet(), other.valueInFeet()) == 0;
+        return Math.abs(this.valueInFeet() - other.valueInFeet()) <= EPSILON;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(Double.valueOf(valueInFeet()));
+    public int hashCode() {     
+ // Make hashCode consistent with epsilon-based equals
+    long rounded = Math.round(this.valueInFeet() / EPSILON);
+    return Objects.hash(rounded);
+
+        //return Objects.hash(Double.valueOf(valueInFeet()));
     }
 }
