@@ -15,9 +15,16 @@ public class Length {
         this.unit = unit;
     }
 
+    
+// UC8: delegate to enum (feet is base)
     private double valueInFeet() {
-        return unit.toFeet(value);
+        return unit.toBaseUnit(value);
     }
+
+
+    // private double valueInFeet() {
+    //     return unit.toFeet(value);
+    // }
 
     
  /**
@@ -134,7 +141,8 @@ if (targetUnit == null) {
         return new Length(sumInTargetUnit, targetUnit);
     }
 
-private static final double EPSILON = 1e-6;
+    //UC4 equality across units    
+    private static final double EPSILON = 1e-6;
 
     @Override
     public boolean equals(Object obj) {
