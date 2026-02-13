@@ -38,4 +38,26 @@ public enum LengthUnit {
         return feetValue / toFeetFactor;
     }
 
+    
+// --- UC8: clear base-unit naming (feet is the base) ---
+    public double toBaseUnit(double value) {
+        return toFeet(value);
+    }
+
+    public double fromBaseUnit(double feetValue) {
+        return fromFeet(feetValue);
+    }
+
+    // --- UC8: unit-to-unit conversion (enum owns conversion) ---
+    public double convert(double value, LengthUnit targetUnit) {
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+
+        
+double inFeet = this.toBaseUnit(value);
+        return targetUnit.fromBaseUnit(inFeet);
+    }
+
+
 }
