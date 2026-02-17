@@ -1,7 +1,7 @@
 
 package com.qma.quantitymeasurement;
 
-public enum WeightUnit {
+public enum WeightUnit implements IMeasurable {
     KILOGRAM(1.0),           // base
     GRAM(0.001),             // 1 g = 0.001 kg
     POUND(0.45359237);       // 1 lb = 0.45359237 kg
@@ -21,6 +21,19 @@ public enum WeightUnit {
     public double fromBaseUnit(double kilogramValue) {
         return kilogramValue / toKilogramFactor;
     }
+
+    
+// --- UC10: implement IMeasurable (2 methods) ---
+    @Override
+    public double getConversionFactor() {
+        return toKilogramFactor; // factor to base = KILOGRAM
+    }
+
+    @Override
+    public String getUnitName() {
+        return name(); // "KILOGRAM", "GRAM", "POUND"
+    }
+
 
     /** Convert value in THIS unit -> target unit via base kg */
     public double convert(double value, WeightUnit target) {

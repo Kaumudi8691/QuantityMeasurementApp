@@ -15,7 +15,7 @@ package com.qma.quantitymeasurement;
 //     }
 // }
 
-public enum LengthUnit {
+public enum LengthUnit implements IMeasurable  {
 
     FEET(1.0),
     INCH(1.0 / 12.0),
@@ -47,6 +47,19 @@ public enum LengthUnit {
     public double fromBaseUnit(double feetValue) {
         return fromFeet(feetValue);
     }
+
+    
+// --- UC10: implement IMeasurable (2 methods) ---
+    @Override
+    public double getConversionFactor() {
+        return toFeetFactor; // factor to base = FEET
+    }
+
+    @Override
+    public String getUnitName() {
+        return name(); // "FEET", "INCH", ...
+    }
+
 
     // --- UC8: unit-to-unit conversion (enum owns conversion) ---
     public double convert(double value, LengthUnit targetUnit) {
